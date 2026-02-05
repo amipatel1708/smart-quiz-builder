@@ -81,3 +81,6 @@ The **Smart Quiz Builder & Analytics Dashboard** enables users to:
 ![One Attempt Analytics](screenshots/one-attempt-analytics.png)
 
 ![multiple Attempts Analytics](screenshots/multiple-attempts-analytics.png)
+
+### Delete Quiz
+![Delete Quiz](screenshots/delete-quiz.png)
