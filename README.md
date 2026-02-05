@@ -63,7 +63,7 @@ The **Smart Quiz Builder & Analytics Dashboard** enables users to:
 ![Add Time per quiz](screenshots/add-time.png)
 
 ### Add / Edit MCQ Question
-![Add/Edit Question](screenshots/add-question.png)
+![Add/Edit Question](screenshots/add-questions.png)
 
 ### Quiz Play Mode
 ![Quiz Play Mode](screenshots/play-quiz.png)
