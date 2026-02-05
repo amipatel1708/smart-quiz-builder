@@ -65,11 +65,11 @@ The **Smart Quiz Builder & Analytics Dashboard** enables users to:
 ### Add / Edit MCQ Question
 ![Add/Edit Question](screenshots/add-questions.png)
 
-### Quiz Play Mode
-![Quiz Play Mode](screenshots/play-quiz.png)
-
 ### Qustion List
 ![Question list](screenshots/question-list.png)
+
+### Quiz Play Mode
+![Quiz Play Mode](screenshots/play-quiz.png)
 
 ### Quiz Completed Popup Modal
 ![Quiz completed popup modal](screenshots/quiz-completed-popup.png)
