@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Smart Quiz Dashboard</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+    <div class="logo"><img src="icons/smart-quiz.png" alt="Quiz" class="icon"/>Smart Quiz Dashboard</div>
+    <nav class="nav">
+        <button data-page="setup" onclick="showPage('setup')" class="active">Quiz Setup</button>
+        <button data-page="play" onclick="showPage('play')">Play Quiz</button>
+        <button data-page="results" onclick="showPage('results')">Results</button>
+        <button data-page="analytics" onclick="showPage('analytics')">Analytics</button>
+    </nav>
+</header>
+
+<main class="dashboard">
+    <!-- DASHBOARD STATS -->
+    <section class="stats-grid">
+        <div class="stat-card">
+            <h4>Total Quizzes</h4>
+            <p id="statQuizzes">0</p>
+        </div>
+        <div class="stat-card">
+            <h4>Total Questions</h4>
+            <p id="statQuestions">0</p>
+        </div>
+        <div class="stat-card">
+            <h4>Total Attempts</h4>
+            <p id="statAttempts">0</p>
+        </div>
+        <div class="stat-card">
+            <h4>Average Score</h4>
+            <p id="statAvg">0%</p>
+        </div>
+    </section>
+
+    <!-- QUIZ SETUP PAGE -->
+    <section id="page-setup" class="page active">
+        <div class="grid-2">
+            <!-- QUIZ MANAGER -->
+            <div class="card">
+                <h3><img src="icons/quiz.png" alt="Quiz" class="icon"/>Quiz Manager</h3>
+                <div class="inline-form">
+                    <input id="quizTitle" placeholder="New Quiz Name" />
+                    <button id="btn" onclick="createQuiz()">Create Quiz</button>
+                </div>
+                <div class="inline-form">
+                    <select id="quizSelect" onchange="switchQuiz()">
+                        <option value="" selected disabled hidden>— Select a Quiz —</option>
+                    </select>
+                    <button id="deleteQuizBtn" class="danger" onclick="deleteQuiz()">Delete</button>
+                </div>
+                <h3><img src="icons/timer.png" alt="Timer" class="icon"/>Quiz Settings</h3>
+                <div class="inline-form">
+                    <input type="number" id="quizTime" min="1" value="10" />
+                    <span class="input-suffix">minutes</span>
+                </div>
+            </div>
+
+            <!-- ADD QUESTION -->
+            <div class="card" id="questionCard">
+                <h3><img src="icons/add-question.png" alt="Timer" class="icon"/>Add/Edit Question</h3>
+                <input id="questionText" placeholder="Enter question" />
+                <div class="options">
+                    <input class="option" placeholder="Option A" />
+                    <input class="option" placeholder="Option B" />
+                    <input class="option" placeholder="Option C" />
+                    <input class="option" placeholder="Option D" />
+                </div>
+                <select id="correctAnswer">
+                    <option value="">Correct Answer</option>
+                    <option value="0">Option A</option>
+                    <option value="1">Option B</option>
+                    <option value="2">Option C</option>
+                    <option value="3">Option D</option>
+                </select>
+                <button id="btn" onclick="saveQuestion()">Save Question</button>
+            </div>
+        </div>
+
+        <!-- QUESTION LIST -->
+        <section class="card">
+            <h3><img src="icons/question-list.png" alt="Timer" class="icon"/>Question List</h3>
+            <ul id="questionList"></ul>
+            <button id="playBtn" class="success" title="Create or select a quiz first">▶ Play Quiz</button>
+        </section>
+    </section>
+
+    <!-- PLAY QUIZ PAGE -->
+    <section id="page-play" class="page">
+        <section class="card center">
+            <h2 id="quizQuestion"></h2>
+            <div id="quizOptions" class="options-grid"></div>
+            <div class="quiz-footer">
+                <p id="timer"></p>
+                <button id="nextBtn" onclick="nextQuestion()" class="success">Next</button>
+            </div>
+        </section>
+    </section>
+
+    <!-- RESULTS PAGE -->
+    <section id="page-results" class="page">
+        <section class="card">
+            <h2><img src="icons/result.png" alt="Timer" class="icon"/>Result Summary</h2>
+            <div id="summaryStats"></div>
+            <h3>Question Review</h3></br>
+            <div id="questionReview"></div>
+        </section>
+
+        <section class="card">
+            <h2><img src="icons/history.png" alt="Timer" class="icon"/>Attempt History</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Date</th>
+                        <th>Score</th>
+                        <th>%</th>
+                    </tr>
+                </thead>
+                <tbody id="attemptTable"></tbody>
+            </table>
+        </section>
+    </section>
+
+    <!-- ANALYTICS PAGE -->
+    <section id="page-analytics" class="page">
+        <div class="analytics-grid">
+            <!-- Overall Accuracy -->
+            <div class="card center">
+                <h3>Overall Accuracy</h3>
+                <div class="donut">
+                    <span id="donutPercent">0%</span>
+                </div>
+                <p>Total Attempts: <strong id="totalAttempts">0</strong></p>
+                <p>Average Score: <strong id="averageScore">0</strong></p>
+            </div>
+
+            <!-- Answer Breakdown -->
+            <div class="card center">
+                <h3>Answer Breakdown</h3>
+                <div class="donut multi" id="answerDonut">
+                    <span id="answerCenter">—</span>
+                </div>
+                <div class="legend">
+                    <p><span class="dot green"></span> Correct: <strong id="statCorrect">0</strong></p>
+                    <p><span class="dot red"></span> Wrong: <strong id="statWrong">0</strong></p>
+                    <p><span class="dot blue"></span> Skipped: <strong id="statSkipped">0</strong></p>
+                </div>
+            </div>
+
+            <!-- Question Accuracy -->
+            <div class="card">
+                <h3>Question Accuracy</h3>
+                <div id="analyticsChart"></div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- CONFIRM DELETE MODAL -->
+<div id="confirmModal" class="modal hidden">
+    <div class="modal-backdrop" onclick="closeConfirmModal()"></div>
+    <div class="modal-box">
+        <h3>Delete Quiz?</h3>
+        <p>This quiz and all its data will be permanently deleted.</p>
+        <div class="modal-actions">
+            <button class="secondary" onclick="closeConfirmModal()">Cancel</button>
+            <button class="danger" onclick="confirmDeleteQuiz()">Delete</button>
+        </div>
+    </div>
+</div>
+
+<!-- QUIZ COMPLETE MODAL -->
+<div id="completeModal" class="modal hidden">
+    <div class="modal-box">
+        <h3>Quiz Completed!</h3>
+        <p>
+            Results will open in
+            <strong id="countdown">5</strong> seconds
+        </p>
+        <button onclick="goToResults()">View Results Now</button>
+    </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
